@@ -1,34 +1,29 @@
 name: automaton-jobs
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      container:
-        image: postman/newman
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: postman/newman
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
         
-        - name: Install newman
-          run: |
-            npm install -g newman
-            npm install -g newman-reporter-htmlextra
+      - name: Install newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
 
-        - name: Make Directory for results
-          run: mkdir -p testResults
+      - name: Make Directory for results
+        run: mkdir -p testResults
 
 
+      - name: Run API Tests
+        run: newman run "Restful-booker.postman_collection.json"
 
-        - name: Run API Tests
-          run: newman run "Restful-booker.postman_collection.json"
-
-        - name: Output the run Details
-          uses: actions/upload-artifact@v2
-          with: 
-            name: RunReports
-            path: testResults
+      - name: Output the run Details
+        uses: actions/upload-artifact@v2
+        with: 
+          name: RunReports
+          path: testResults
