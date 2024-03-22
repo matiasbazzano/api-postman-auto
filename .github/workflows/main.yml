@@ -23,9 +23,8 @@ jobs:
       - name: Make Directory for results
         run: mkdir -p testResults
 
-
       - name: Run API Tests
-        run: newman run "Restful-booker.postman_collection.json"
+        run: newman run "Restful-booker.postman_collection.json" -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html || true
 
       - name: Output the run Details
         uses: actions/upload-artifact@v2
